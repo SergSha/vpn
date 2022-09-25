@@ -359,14 +359,14 @@ Server listening on 5201
 Connecting to host 10.10.10.1, port 5201
 [  4] local 10.10.10.2 port 59498 connected to 10.10.10.1 port 5201
 [ ID] Interval           Transfer     Bandwidth       Retr  Cwnd
-[  4]   0.00-5.00   sec  87.0 MBytes   146 Mbits/sec   58    157 KBytes       
-[  4]   5.00-10.01  sec  88.3 MBytes   148 Mbits/sec   50    133 KBytes       
-[  4]  10.01-15.00  sec  87.1 MBytes   146 Mbits/sec   64    193 KBytes       
-[  4]  15.00-20.00  sec  87.2 MBytes   146 Mbits/sec   59    174 KBytes       
-[  4]  20.00-25.00  sec  88.5 MBytes   148 Mbits/sec   22    268 KBytes       
-[  4]  25.00-30.00  sec  85.0 MBytes   143 Mbits/sec   47    219 KBytes       
-[  4]  30.00-35.00  sec  86.5 MBytes   145 Mbits/sec   75    181 KBytes       
-[  4]  35.00-40.01  sec  88.6 MBytes   148 Mbits/sec   57    218 KBytes       
+[  4]   0.00-5.00   sec  87.0 MBytes   146 Mbits/sec   58    157 KBytes
+[  4]   5.00-10.01  sec  88.3 MBytes   148 Mbits/sec   50    133 KBytes
+[  4]  10.01-15.00  sec  87.1 MBytes   146 Mbits/sec   64    193 KBytes
+[  4]  15.00-20.00  sec  87.2 MBytes   146 Mbits/sec   59    174 KBytes
+[  4]  20.00-25.00  sec  88.5 MBytes   148 Mbits/sec   22    268 KBytes
+[  4]  25.00-30.00  sec  85.0 MBytes   143 Mbits/sec   47    219 KBytes
+[  4]  30.00-35.00  sec  86.5 MBytes   145 Mbits/sec   75    181 KBytes
+[  4]  35.00-40.01  sec  88.6 MBytes   148 Mbits/sec   57    218 KBytes
 - - - - - - - - - - - - - - - - - - - - - - - - -
 [ ID] Interval           Transfer     Bandwidth       Retr
 [  4]   0.00-40.01  sec   698 MBytes   146 Mbits/sec  432             sender
@@ -375,14 +375,31 @@ Connecting to host 10.10.10.1, port 5201
 iperf Done.
 [root@client ~]#</pre>
 
+<p>Разница tun и tap режимов:</p>
 
+<p>TAP:</p>
 
+<p>Преимущества:<br />
+ведёт себя как настоящий сетевой адаптер (за исключением того, что он виртуальный);<br />
+может осуществлять транспорт любого сетевого протокола (IPv4, IPv6, IPX и прочих);<br />
+работает на 2 уровне, поэтому может передавать Ethernet-кадры внутри тоннеля;<br />
+позволяет использовать мосты.</p>
 
+<p>Недостатки:<br />
+в тоннель попадает broadcast-трафик, что иногда не требуется;<br />
+добавляет свои заголовки поверх заголовков Ethernet на все пакеты, которые следуют через тоннель;<br />
+в целом, менее масштабируем из-за предыдущих двух пунктов;<br />
+не поддерживается устройствами Android и iOS (по информации с сайта OpenVPN).</p>
 
+<p>TUN:</p>
 
+<p>Преимущества:<br />
+передает только пакеты протокола IP (3й уровень);<br />
+сравнительно (отн. TAP) меньшие накладные расходы и, фактически, ходит только тот IP-трафик, который предназначен конкретному клиенту.</p>
 
-
-
+<p>Недостатки:<br />
+broadcast-трафик обычно не передаётся;<br />
+нельзя использовать мосты.</p>
 
 <h4>2. RAS на базе OpenVPN</h4>
 
@@ -696,4 +713,5 @@ Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
 [root@localhost openvpn]#</pre>
 
 <p>Как видим, мы получили соединение с RAS сервером с помощью openvpn.</p>
+
 
