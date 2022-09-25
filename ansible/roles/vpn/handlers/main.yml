@@ -1,2 +1,8 @@
 ---
 # handlers file for vpn
+
+- name: openvpn server restart
+  service: openvpn@server
+  state: restarted
+  enabled: true
+
