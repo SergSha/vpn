@@ -648,9 +648,9 @@ proto udp
 remote 192.168.20.10 1207
 client
 resolv-retry infinite
-ca ./ca.crt
-cert ./client.crt
-key ./client.key
+ca /etc/openvpn/ca.crt
+cert /etc/openvpn/client.crt
+key /etc/openvpn/client.key
 route 192.168.20.0 255.255.255.0
 persist-key
 persist-tun
@@ -712,6 +712,6 @@ Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
 192.168.122.0   0.0.0.0         255.255.255.0   U         0 0          0 virbr0
 [root@localhost openvpn]#</pre>
 
-<p>Как видим, мы получили соединение с RAS сервером с помощью openvpn.</p>
+<p>Как видим, мы получили соединение с виртуальным RAS сервером с помощью openvpn.</p>
 
 
