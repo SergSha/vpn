@@ -657,9 +657,7 @@ persist-tun
 comp-lzo
 verb 3</pre>
 
-<p>11. После того, как все готово, подключаемся к openvpn сервер с хост-машины:</p>
-
-openvpn --config client.conf
+<p>11. После того, как все готово, подключаемся к openvpn сервер с хост-машины, например, openvpn --config client.conf:</p>
 
 <pre>[user@localhost vpn]$ systemctl start openvpn@client
 [user@localhost vpn]$</pre>
