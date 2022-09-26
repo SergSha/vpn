@@ -25,7 +25,14 @@
     copy:
       src: server/server.conf
       dest: etc/openvpn/server.conf
-    notify: openvpn server restart
+    notify: openvpn restart
+  when: ansible_hostname == "server"
+
+- name: Client | Configure OpenVPN client
+  copy:
+    src: client/client.conf
+    dest: etc/openvpn/client.conf
+  notify: openvpn restart
   when: ansible_hostname == "server"
 
 

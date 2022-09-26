@@ -1,7 +1,7 @@
 [servers]
-server ansible_host=192.168.50.10 ansible_user=vagrant ansible_ssh_private_key_file=.vagrant/machines/server/virtualbox/private_key
-client ansible_host=192.168.50.11 ansible_user=vagrant ansible_ssh_private_key_file=.vagrant/machines/client/virtualbox/private_key
+server ansible_host=192.168.10.10 ansible_user=vagrant ansible_ssh_private_key_file=.vagrant/machines/server/virtualbox/private_key
+client ansible_host=192.168.10.20 ansible_user=vagrant ansible_ssh_private_key_file=.vagrant/machines/client/virtualbox/private_key
 
 [ras]
-rasvpn ansible_host=192.168.50.20 ansible_user=vagrant ansible_ssh_private_key_file=.vagrant/machines/rasvpn/virtualbox/private_key
+rasvpn ansible_host=192.168.20.10 ansible_user=vagrant ansible_ssh_private_key_file=.vagrant/machines/rasvpn/virtualbox/private_key
 
