@@ -2,37 +2,35 @@
 # tasks file for vpn
 
 - name: All servers | Install EPEL
-  yum: epel-release
-  state: present
+  yum: 
+    name: epel-release
+    state: present
 
 - name: All servers | Install OpenVPN
   yum:
-  - openvpn
-  - iperf3
-  state: present
+    name:
+    - openvpn
+    - iperf3
+    state: present
 
 - name: All servers | Put SELinux in permissive mode, logging actions that would be blocked
   selinux:
     policy: targeted
     state: permissive
 
-- name: Server | Configure OpenVPN server
-  block:
-  - name: generate server key
-    command: openvpn --genkey --secret /etc/openvpn/static.key
-
-  - name: copy server config file
-    copy:
-      src: server/server.conf
-      dest: etc/openvpn/server.conf
-    notify: openvpn restart
-  when: ansible_hostname == "server"
-
-- name: Client | Configure OpenVPN client
+- name: All servers | Configure OpenVPN
   copy:
-    src: client/client.conf
-    dest: etc/openvpn/client.conf
+    src: {{ item }}/{{ item }}.conf
+    dest: /etc/openvpn/{{ item }}.conf
   notify: openvpn restart
+  when: ansible_hostname == "{{ item }}"
+  loop:
+  - "server"
+  - "client"
+
+- name: Server | generate server key
+  command: openvpn --genkey --secret /etc/openvpn/static.key
   when: ansible_hostname == "server"
+
 
 
