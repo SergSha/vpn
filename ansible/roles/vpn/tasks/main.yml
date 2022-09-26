@@ -18,19 +18,58 @@
     policy: targeted
     state: permissive
 
+- name: Server | generate server key
+  block:
+  - name: generate server key
+    command: openvpn --genkey --secret /etc/openvpn/static.key
+
+  - name: fetch static.key to /tmp/fetched
+    fetch:
+      src: /etc/openvpn/static.key
+      dest: /tmp/fetched
+  when: ansible_hostname == "server"
+
+- name: Client | copy static.key to client server
+  copy:
+    src: /tmp/fetched/server/etc/openvpn/static.key
+    dest: /etc/openvpn/static.key
+  when: ansible_hostname == "client"
+
 - name: All servers | Configure OpenVPN
   copy:
-    src: {{ item }}/{{ item }}.conf
-    dest: /etc/openvpn/{{ item }}.conf
+    src: "{{ item }}/{{ item }}.conf"
+    dest: "/etc/openvpn/{{ item }}.conf"
   notify: openvpn restart
   when: ansible_hostname == "{{ item }}"
   loop:
   - "server"
   - "client"
 
-- name: Server | generate server key
-  command: openvpn --genkey --secret /etc/openvpn/static.key
+- name: Client | Ping to OpenVPN Server
+  block:
+  - name: Client | ping to openvpn server
+    command: ping -c 4 10.10.10.1
+    register: ping_to_server
+
+  - name: Client | echo ping result
+    debug: msg="{{ ping_to_server.stdout_lines }}"
+  when: ansible_hostname == "client"
+
+- name: Server | run iperf3
+  command: iperf3 -s &
   when: ansible_hostname == "server"
+
+- name: Client | iperf3 openvpn with TAP
+  block:
+  - name: Client | iperf3 openvpn with TAP
+    command: iperf3 -c 10.10.10.1 -t 40 -i 5
+    register: iperf3_result
+
+  - name: Client | echo iperf3 result of openvpn with TAP
+    debug: msg="{{ iperf3_result.stdout_lines }}"
+
+  when: ansible_hostname == "client"
+
 
 
 
