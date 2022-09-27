@@ -81,5 +81,39 @@
     debug: msg="{{ iperf3_result.stdout_lines }}"
   when: ansible_hostname == "client"
 
+- name: Edit openvpn config file /etc/openvpn/server_and_client.conf
+  lineinfile: 
+    path: "/etc/openvpn/{{ item }}.conf"
+    regexp: '^(.*)dev tap(.*)$'
+    line: 'dev tun'
+    backrefs: yes
+  when: ansible_hostname == "{{ item }}"
+  loop:
+  - "server"
+  - "client"  
 
+- name: OpenVPN service restart
+  service:
+    name: "openvpn@{{ item }}"
+    state: restarted
+    enabled: true
+  when: ansible_hostname == "{{ item }}"
+  loop:
+  - "server"
+  - "client"
 
+- name: Server | run iperf3
+  command: iperf3 -s &
+  async: 60 # Время на выполнение в фоновом режиме
+  poll: 0   # Переход к след. команде не дожидаясь завершения тек. операции
+  when: ansible_hostname == "server"
+
+- name: Client | iperf3 openvpn with TUN
+  block:
+  - name: Client | iperf3 openvpn with TUN
+    command: iperf3 -c 10.10.10.1 -t 40 -i 5
+    register: iperf3_result
+
+  - name: Client | echo iperf3 result of openvpn with TUN
+    debug: msg="{{ iperf3_result.stdout_lines }}"
+  when: ansible_hostname == "client"
