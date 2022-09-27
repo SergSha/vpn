@@ -169,68 +169,11 @@ Created symlink from /etc/systemd/system/multi-user.target.wants/openvpn@client.
 <p>Получаем следующие результаты:
 на ВМ server (openvpn-сервер):</p>
 
-<pre>[root@server ~]# iperf3 -s &
-[2] 22417
-[root@server ~]# iperf3: error - unable to start listener for connections: Address already in use
-iperf3: exiting
-Accepted connection from 10.10.10.2, port 59492
-[  5] local 10.10.10.1 port 5201 connected to 10.10.10.2 port 59494
-[ ID] Interval           Transfer     Bandwidth
-[  5]   0.00-1.00   sec  14.8 MBytes   124 Mbits/sec                  
-[  5]   1.00-2.00   sec  15.0 MBytes   126 Mbits/sec                  
-[  5]   2.00-3.01   sec  16.6 MBytes   139 Mbits/sec                  
-[  5]   3.01-4.00   sec  16.7 MBytes   142 Mbits/sec                  
-[  5]   4.00-5.00   sec  16.0 MBytes   134 Mbits/sec                  
-[  5]   5.00-6.01   sec  16.1 MBytes   134 Mbits/sec                  
-[  5]   6.01-7.00   sec  16.1 MBytes   135 Mbits/sec                  
-[  5]   7.00-8.00   sec  15.5 MBytes   131 Mbits/sec                  
-[  5]   8.00-9.00   sec  15.7 MBytes   132 Mbits/sec                  
-[  5]   9.00-10.00  sec  16.5 MBytes   138 Mbits/sec                  
-[  5]  10.00-11.00  sec  17.1 MBytes   144 Mbits/sec                  
-[  5]  11.00-12.00  sec  16.4 MBytes   137 Mbits/sec                  
-[  5]  12.00-13.01  sec  16.9 MBytes   141 Mbits/sec                  
-[  5]  13.01-14.01  sec  15.8 MBytes   133 Mbits/sec                  
-[  5]  14.01-15.00  sec  15.7 MBytes   132 Mbits/sec                  
-[  5]  15.00-16.00  sec  16.4 MBytes   137 Mbits/sec                  
-[  5]  16.00-17.00  sec  15.4 MBytes   129 Mbits/sec                  
-[  5]  17.00-18.00  sec  16.3 MBytes   137 Mbits/sec                  
-[  5]  18.00-19.00  sec  15.6 MBytes   131 Mbits/sec                  
-[  5]  19.00-20.00  sec  15.9 MBytes   134 Mbits/sec                  
-[  5]  20.00-21.00  sec  16.5 MBytes   138 Mbits/sec                  
-[  5]  21.00-22.00  sec  14.9 MBytes   125 Mbits/sec                  
-[  5]  22.00-23.01  sec  16.5 MBytes   138 Mbits/sec                  
-[  5]  23.01-24.01  sec  15.5 MBytes   130 Mbits/sec                  
-[  5]  24.01-25.00  sec  14.3 MBytes   120 Mbits/sec                  
-[  5]  25.00-26.00  sec  13.2 MBytes   111 Mbits/sec                  
-[  5]  26.00-27.00  sec  14.7 MBytes   123 Mbits/sec                  
-[  5]  27.00-28.00  sec  14.7 MBytes   123 Mbits/sec                  
-[  5]  28.00-29.00  sec  16.7 MBytes   140 Mbits/sec                  
-[  5]  29.00-30.00  sec  15.5 MBytes   130 Mbits/sec                  
-[  5]  30.00-31.00  sec  16.0 MBytes   135 Mbits/sec                  
-[  5]  31.00-32.00  sec  16.4 MBytes   137 Mbits/sec                  
-[  5]  32.00-33.00  sec  16.3 MBytes   136 Mbits/sec                  
-[  5]  33.00-34.00  sec  16.5 MBytes   139 Mbits/sec                  
-[  5]  34.00-35.00  sec  16.0 MBytes   135 Mbits/sec                  
-[  5]  35.00-36.00  sec  16.8 MBytes   141 Mbits/sec                  
-[  5]  36.00-37.00  sec  15.5 MBytes   130 Mbits/sec                  
-[  5]  37.00-38.00  sec  15.9 MBytes   134 Mbits/sec                  
-[  5]  38.00-39.00  sec  16.0 MBytes   134 Mbits/sec                  
-[  5]  39.00-40.00  sec  16.3 MBytes   137 Mbits/sec                  
-[  5]  40.00-40.04  sec   590 KBytes   119 Mbits/sec                  
-- - - - - - - - - - - - - - - - - - - - - - - - -
-[ ID] Interval           Transfer     Bandwidth
-[  5]   0.00-40.04  sec  0.00 Bytes  0.00 bits/sec                  sender
-[  5]   0.00-40.04  sec   636 MBytes   133 Mbits/sec                  receiver
------------------------------------------------------------
-Server listening on 5201
------------------------------------------------------------
-^C
-[2]+  Exit 1                  iperf3 -s
-[root@server ~]#</pre>
+<pre>[root@<b>server</b> ~]# iperf3 -s &</pre>
 
 <p>на ВМ client (openvpn-клиент):</p>
 
-<pre>[root@client ~]# iperf3 -c 10.10.10.1 -t 40 -i 5
+<pre>[root@<b>client</b> ~]# iperf3 -c 10.10.10.1 -t 40 -i 5
 Connecting to host 10.10.10.1, port 5201
 [  4] local 10.10.10.2 port 59494 connected to 10.10.10.1 port 5201
 [ ID] Interval           Transfer     Bandwidth       Retr  Cwnd
@@ -248,7 +191,7 @@ Connecting to host 10.10.10.1, port 5201
 [  4]   0.00-40.00  sec   636 MBytes   133 Mbits/sec                  receiver
 
 iperf Done.
-[root@client ~]#</pre>
+[root@<b>client</b> ~]#</pre>
 
 <p>6. Повторяем пункты 1-5 для режима работы tun. Конфигурационные файлы сервера и клиента изменятся только в директиве dev. Делаем выводы о режимах, их достоинствах и недостатках.</p>
 
@@ -296,66 +239,9 @@ verb 3</pre>
 
 <p>Снова проведём замеры скорости в туннеле и получаем следующие результаты:</p>
 
-<pre>[root@server ~]# iperf3 -s &
-[2] 22479
-[root@server ~]# iperf3: error - unable to start listener for connections: Address already in use
-iperf3: exiting
-Accepted connection from 10.10.10.2, port 59496
-[  5] local 10.10.10.1 port 5201 connected to 10.10.10.2 port 59498
-[ ID] Interval           Transfer     Bandwidth
-[  5]   0.00-1.01   sec  15.0 MBytes   125 Mbits/sec                  
-[  5]   1.01-2.00   sec  17.3 MBytes   146 Mbits/sec                  
-[  5]   2.00-3.00   sec  17.9 MBytes   149 Mbits/sec                  
-[  5]   3.00-4.01   sec  17.8 MBytes   149 Mbits/sec                  
-[  5]   4.01-5.00   sec  17.8 MBytes   151 Mbits/sec                  
-[  5]   5.00-6.00   sec  17.9 MBytes   149 Mbits/sec                  
-[  5]   6.00-7.00   sec  17.9 MBytes   151 Mbits/sec                  
-[  5]   7.00-8.00   sec  17.6 MBytes   148 Mbits/sec                  
-[  5]   8.00-9.00   sec  18.0 MBytes   151 Mbits/sec                  
-[  5]   9.00-10.01  sec  17.3 MBytes   144 Mbits/sec                  
-[  5]  10.01-11.00  sec  17.7 MBytes   149 Mbits/sec                  
-[  5]  11.00-12.00  sec  17.7 MBytes   149 Mbits/sec                  
-[  5]  12.00-13.00  sec  17.8 MBytes   150 Mbits/sec                  
-[  5]  13.00-14.00  sec  16.5 MBytes   138 Mbits/sec                  
-[  5]  14.00-15.01  sec  17.1 MBytes   144 Mbits/sec                  
-[  5]  15.01-16.00  sec  17.7 MBytes   149 Mbits/sec                  
-[  5]  16.00-17.00  sec  17.8 MBytes   149 Mbits/sec                  
-[  5]  17.00-18.00  sec  15.6 MBytes   131 Mbits/sec                  
-[  5]  18.00-19.00  sec  17.9 MBytes   150 Mbits/sec                  
-[  5]  19.00-20.00  sec  17.9 MBytes   150 Mbits/sec                  
-[  5]  20.00-21.00  sec  17.6 MBytes   148 Mbits/sec                  
-[  5]  21.00-22.00  sec  17.9 MBytes   150 Mbits/sec                  
-[  5]  22.00-23.00  sec  17.7 MBytes   148 Mbits/sec                  
-[  5]  23.00-24.01  sec  17.6 MBytes   147 Mbits/sec                  
-[  5]  24.01-25.00  sec  17.9 MBytes   151 Mbits/sec                  
-[  5]  25.00-26.00  sec  15.4 MBytes   130 Mbits/sec                  
-[  5]  26.00-27.00  sec  16.4 MBytes   138 Mbits/sec                  
-[  5]  27.00-28.00  sec  17.9 MBytes   150 Mbits/sec                  
-[  5]  28.00-29.00  sec  17.2 MBytes   143 Mbits/sec                  
-[  5]  29.00-30.01  sec  17.8 MBytes   149 Mbits/sec                  
-[  5]  30.01-31.00  sec  17.0 MBytes   144 Mbits/sec                  
-[  5]  31.00-32.00  sec  17.6 MBytes   148 Mbits/sec                  
-[  5]  32.00-33.00  sec  17.1 MBytes   143 Mbits/sec                  
-[  5]  33.00-34.00  sec  17.9 MBytes   150 Mbits/sec                  
-[  5]  34.00-35.00  sec  17.0 MBytes   143 Mbits/sec                  
-[  5]  35.00-36.00  sec  17.9 MBytes   150 Mbits/sec                  
-[  5]  36.00-37.00  sec  17.3 MBytes   145 Mbits/sec                  
-[  5]  37.00-38.00  sec  17.2 MBytes   144 Mbits/sec                  
-[  5]  38.00-39.00  sec  18.5 MBytes   155 Mbits/sec                  
-[  5]  39.00-40.00  sec  17.4 MBytes   146 Mbits/sec                  
-[  5]  40.00-40.06  sec  1.05 MBytes   141 Mbits/sec                  
-- - - - - - - - - - - - - - - - - - - - - - - - -
-[ ID] Interval           Transfer     Bandwidth
-[  5]   0.00-40.06  sec  0.00 Bytes  0.00 bits/sec                  sender
-[  5]   0.00-40.06  sec   698 MBytes   146 Mbits/sec                  receiver
------------------------------------------------------------
-Server listening on 5201
------------------------------------------------------------
-^C
-[2]+  Exit 1                  iperf3 -s
-[root@server ~]#</pre>
+<pre>[root@<b>server</b> ~]# iperf3 -s &</pre>
 
-<pre>[root@client ~]# iperf3 -c 10.10.10.1 -t 40 -i 5
+<pre>[root@<b>client</b> ~]# iperf3 -c 10.10.10.1 -t 40 -i 5
 Connecting to host 10.10.10.1, port 5201
 [  4] local 10.10.10.2 port 59498 connected to 10.10.10.1 port 5201
 [ ID] Interval           Transfer     Bandwidth       Retr  Cwnd
@@ -380,32 +266,32 @@ iperf Done.
 <p>TAP:</p>
 
 <p>Преимущества:<br />
-ведёт себя как настоящий сетевой адаптер (за исключением того, что он виртуальный);<br />
-может осуществлять транспорт любого сетевого протокола (IPv4, IPv6, IPX и прочих);<br />
-работает на 2 уровне, поэтому может передавать Ethernet-кадры внутри тоннеля;<br />
-позволяет использовать мосты.</p>
+- ведёт себя как настоящий сетевой адаптер (за исключением того, что он виртуальный);<br />
+- может осуществлять транспорт любого сетевого протокола (IPv4, IPv6, IPX и прочих);<br />
+- работает на 2 уровне, поэтому может передавать Ethernet-кадры внутри тоннеля;<br />
+- позволяет использовать мосты.</p>
 
 <p>Недостатки:<br />
-в тоннель попадает broadcast-трафик, что иногда не требуется;<br />
-добавляет свои заголовки поверх заголовков Ethernet на все пакеты, которые следуют через тоннель;<br />
-в целом, менее масштабируем из-за предыдущих двух пунктов;<br />
-не поддерживается устройствами Android и iOS (по информации с сайта OpenVPN).</p>
+- в тоннель попадает broadcast-трафик, что иногда не требуется;<br />
+- добавляет свои заголовки поверх заголовков Ethernet на все пакеты, которые следуют через тоннель;<br />
+- в целом, менее масштабируем из-за предыдущих двух пунктов;<br />
+- не поддерживается устройствами Android и iOS.</p>
 
 <p>TUN:</p>
 
 <p>Преимущества:<br />
-передает только пакеты протокола IP (3й уровень);<br />
-сравнительно (отн. TAP) меньшие накладные расходы и, фактически, ходит только тот IP-трафик, который предназначен конкретному клиенту.</p>
+- передает только пакеты протокола IP (3й уровень);<br />
+- сравнительно (отн. TAP) меньшие накладные расходы и, фактически, ходит только тот IP-трафик, который предназначен конкретному клиенту.</p>
 
 <p>Недостатки:<br />
-broadcast-трафик обычно не передаётся;<br />
-нельзя использовать мосты.</p>
+- broadcast-трафик обычно не передаётся;<br />
+- нельзя использовать мосты.</p>
 
 <h4>2. RAS на базе OpenVPN</h4>
 
 <p>Для выполнения данного задания создадим новый Vagrantfile:</p>
 
-<pre></pre>
+<pre>[user@localhost vpn]$ vi ./Vagrantfile</pre>
 
 <pre># -*- mode: ruby -*-
 # vi: set ft=ruby :
@@ -623,7 +509,7 @@ verb 3</pre>
 
 <p>7. Зададим параметр iroute для клиента</p>
 
-<pre>[root@rasvpn openvpn]# <b>echo 'iroute 192.168.33.0 255.255.255.0' > /etc/openvpn/client/client</b>
+<pre>[root@rasvpn openvpn]# <b>echo 'iroute 192.168.20.0 255.255.255.0' > /etc/openvpn/client/client</b>
 [root@rasvpn openvpn]#</pre>
 
 <p>8. Запускаем openvpn сервер и добавляем в автозагрузку.</p>

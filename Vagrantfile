@@ -14,5 +14,12 @@ Vagrant.configure(2) do |config|
   config.vm.define "rasvpn" do |rasvpn|
     rasvpn.vm.hostname = "rasvpn.loc"
     rasvpn.vm.network "private_network", ip: '192.168.20.10', adapter: 2, bridge: "wlp2s0"
+    rasvpn.vm.provision "ansible" do |ansible|
+      ansible.playbook = "ansible/playbook.yml"
+      ansible.inventory_path = "ansible/hosts"
+      ansible.host_key_checking = "false"
+      ansible.limit = "all"
+    end
   end
 end
+

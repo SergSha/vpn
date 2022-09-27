@@ -40,7 +40,7 @@
     src: "{{ item }}/{{ item }}.conf"
     dest: "/etc/openvpn/{{ item }}.conf"
 #  notify: openvpn restart
-  when: ansible_hostname == "{{ item }}"
+  when: ansible_hostname == item
   loop:
   - "server"
   - "client"
@@ -50,7 +50,7 @@
     name: "openvpn@{{ item }}"
     state: restarted
     enabled: true
-  when: ansible_hostname == "{{ item }}"
+  when: ansible_hostname == item
   loop:
   - "server"
   - "client"
@@ -73,6 +73,13 @@
 
 - name: Client | iperf3 openvpn with TAP
   block:
+  - name: Client | get info about TAP network interface
+    command: ip address show dev tap0
+    register: get_ip_tap
+
+  - name: Client | show info about TAP network interface
+    debug: msg="{{ get_ip_tap.stdout_lines }}"
+
   - name: Client | iperf3 openvpn with TAP
     command: iperf3 -c 10.10.10.1 -t 40 -i 5
     register: iperf3_result_tap
@@ -90,7 +97,7 @@
     regexp: '^(.*)dev tap(.*)$'
     line: 'dev tun'
     backrefs: yes
-  when: ansible_hostname == "{{ item }}"
+  when: ansible_hostname == item
   loop:
   - "server"
   - "client"  
@@ -100,7 +107,7 @@
     name: "openvpn@{{ item }}"
     state: restarted
     enabled: true
-  when: ansible_hostname == "{{ item }}"
+  when: ansible_hostname == item
   loop:
   - "server"
   - "client"
@@ -113,6 +120,13 @@
 
 - name: Client | iperf3 openvpn with TUN
   block:
+  - name: Client | get info about TUN network interface
+    command: ip address show dev tun0
+    register: get_ip_tun
+
+  - name: Client | show info about TUN network interface
+    debug: msg="{{ get_ip_tun.stdout_lines }}"
+
   - name: Client | iperf3 openvpn with TUN
     command: iperf3 -c 10.10.10.1 -t 40 -i 5
     register: iperf3_result_tun
