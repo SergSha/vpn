@@ -77,12 +77,12 @@
     command: ip address show dev tap0
     register: get_ip_tap
 
-  - name: Client | show info about TAP network interface
-    debug: msg="{{ get_ip_tap.stdout_lines }}"
-
   - name: Client | iperf3 openvpn with TAP
     command: iperf3 -c 10.10.10.1 -t 40 -i 5
     register: iperf3_result_tap
+
+  - name: Client | show info about TAP network interface
+    debug: msg="{{ get_ip_tap.stdout_lines }}"
 
   - name: Client | echo iperf3 result of openvpn with TAP
     debug: msg="{{ iperf3_result_tap.stdout_lines }}"
@@ -124,12 +124,12 @@
     command: ip address show dev tun0
     register: get_ip_tun
 
-  - name: Client | show info about TUN network interface
-    debug: msg="{{ get_ip_tun.stdout_lines }}"
-
   - name: Client | iperf3 openvpn with TUN
     command: iperf3 -c 10.10.10.1 -t 40 -i 5
     register: iperf3_result_tun
+
+  - name: Client | show info about TUN network interface
+    debug: msg="{{ get_ip_tun.stdout_lines }}"
 
   - name: Client | echo iperf3 result of openvpn with TUN
     debug: msg="{{ iperf3_result_tun.stdout_lines }}"
