@@ -1,6 +1,25 @@
 ---
 # tasks file for vpn
 
+- name: All servers | Install EPEL
+  yum: 
+    name: epel-release
+    state: present
+
+- name: All servers | Install OpenVPN
+  yum:
+    name:
+    - openvpn
+    - iperf3
+    state: present
+
+- name: All servers | Put SELinux in permissive mode, logging actions that would be blocked
+  selinux:
+    policy: targeted
+    state: permissive
+
 - include_tasks: vpn.yml
+  tags: vpn
 
 - include_tasks: ras.yml
+  tags: rasvpn
