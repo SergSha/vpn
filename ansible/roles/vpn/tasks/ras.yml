@@ -9,37 +9,57 @@
       - easy-rsa
       state: present
 
-  - name: rasserver | initial PKI
-    shell: /usr/share/easy-rsa/3.0.8/easyrsa init-pki
-    chdir: /etc/openvpn
+  - name: rasserver | Initialize pki
+    command: /usr/share/easy-rsa/3.0.8/easyrsa init-pki
+    args:
+      chdir: "/etc/openvpn"
+      creates: "/etc/openvpn/pki"
   
-  - name: rasserver | generate ca-key for server
-    shell: echo 'rasvpn' | /usr/share/easy-rsa/3.0.8/easyrsa build-ca nopass
-    chdir: /etc/openvpn
+  - name: rasserver | Build CA key
+#    shell: echo 'rasvpn' | /usr/share/easy-rsa/3.0.8/easyrsa build-ca nopass
+    command: /usr/share/easy-rsa/3.0.8/easyrsa build-ca nopass
+    args:
+      chdir: "/etc/openvpn"
+      creates: "/etc/openvpn/pki/ca.key"
   
-  - name: rasserver | generate sert for server
-    shell: echo 'rasvpn' | /usr/share/easy-rsa/3.0.8/easyrsa gen-req server nopass
-    chdir: /etc/openvpn
+  - name: rasserver | Build the DH (Diffie-Hellman) key
+    command: /usr/share/easy-rsa/3.0.8/easyrsa gen-dh
+      chdir: "/etc/openvpn"
+      creates: "/etc/openvpn/pki/dh.pem"
   
-  - name: rasserver | confirm sert for server
-    shell: echo 'yes' | /usr/share/easy-rsa/3.0.8/easyrsa sign-req server server
-    chdir: /etc/openvpn
+  - name: rasserver | Generate the server sertificate/key
+    #shell: echo 'rasvpn' | /usr/share/easy-rsa/3.0.8/easyrsa gen-req server nopass
+    command: /usr/share/easy-rsa/3.0.8/easyrsa gen-req server nopass
+    args:
+      chdir: "/etc/openvpn"
+      creates: "/etc/openvpn/pki/private/server.key"
   
-  - name: rasserver | generate dh-key
-    shell: /usr/share/easy-rsa/3.0.8/easyrsa gen-dh
-    chdir: /etc/openvpn
+  - name: rasserver | Get the new CA to sign our server key
+#    shell: echo 'yes' | /usr/share/easy-rsa/3.0.8/easyrsa sign-req server server
+    command: /usr/share/easy-rsa/3.0.8/easyrsa sign-req server server
+    args:
+      chdir: "/etc/openvpn"
+      creates: "/etc/openvpn/pki/issued/server.crt"
   
-  - name: rasserver | generate ta-key
-    shell: openvpn --genkey --secret ta.key
-    chdir: /etc/openvpn
+  - name: rasserver | Generate TA key
+    command: openvpn --genkey --secret ta.key
+    args:
+      chdir: "/etc/openvpn"
+      creates: "/etc/openvpn/pki/ta.key"
   
-  - name: rasserver | generate sert for client
-    shell: echo 'client' | /usr/share/easy-rsa/3/easyrsa gen-req client nopass
-    chdir: /etc/openvpn
+  - name: rasserver | Create the client keys
+#    shell: echo 'client' | /usr/share/easy-rsa/3/easyrsa gen-req client nopass
+    command: usr/share/easy-rsa/3/easyrsa gen-req client nopass
+    args:
+      chdir: "/etc/openvpn"
+      creates: "/etc/openvpn/pki/private/client.key"
   
-  - name: rasserver | confirm sert for client
-    shell: echo 'yes' | /usr/share/easy-rsa/3/easyrsa sign-req client client
-    chdir: /etc/openvpn
+  - name: rasserver | Get the certificate authority to sign the client request
+#    shell: echo 'yes' | /usr/share/easy-rsa/3/easyrsa sign-req client client
+    command: /usr/share/easy-rsa/3/easyrsa sign-req client client
+    args:
+      chdir: "/etc/openvpn"
+      creates: "/etc/openvpn/pki/issued/client.crt"
   
   - name: rasserver | copy config file for server
     copy:
