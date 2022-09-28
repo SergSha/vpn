@@ -124,5 +124,5 @@
   
   - name: rasclient | show result of client ip rooute
     debug: msg = "{{ client_ip_route }}"
-  when: ansible_hostname == "client"
+  when: ansible_hostname == "rasclient"
 
