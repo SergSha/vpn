@@ -598,4 +598,9 @@ Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
 
 <p>Как видим, мы получили соединение с виртуальным RAS сервером с помощью openvpn.</p>
 
+<h4>Запуск стенда "vpn"</h4>
+
+<p>Запустить стенд с помощью следующей команды:</p>
+
+<pre>$ git clone https://github.com/SergSha/vpn && cd ./vpn/ && vagrant up</pre>
 
