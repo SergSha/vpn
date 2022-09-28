@@ -11,14 +11,14 @@ Vagrant.configure(2) do |config|
     client.vm.hostname = "client.loc"
     client.vm.network "private_network", ip: "192.168.10.20"
   end
-  config.vm.define "rasvpn-server" do |rasvpn-server|
-    rasvpn-server.vm.hostname = "rasvpn-server.ras"
-    rasvpn-server.vm.network "private_network", ip: "192.168.20.10"
+  config.vm.define "rasserver" do |rasserver|
+    rasserver.vm.hostname = "rasserver.ras"
+    rasserver.vm.network "private_network", ip: "192.168.20.10"
   end
-  config.vm.define "rasvpn-client" do |rasvpn-client|
-    rasvpn-client.vm.hostname = "rasvpn.loc"
-    rasvpn-client.vm.network "private_network", ip: "192.168.20.20"
-    rasvpn-client.vm.provision "ansible" do |ansible|
+  config.vm.define "rasclient" do |rasclient|
+    rasclient.vm.hostname = "rasvpn.loc"
+    rasclient.vm.network "private_network", ip: "192.168.20.20"
+    rasclient.vm.provision "ansible" do |ansible|
       ansible.playbook = "ansible/playbook.yml"
       ansible.inventory_path = "ansible/hosts"
       ansible.host_key_checking = "false"

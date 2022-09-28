@@ -1,58 +1,58 @@
 ---
 # tasks file for vpn
 
-- name: rasvpn-server | Configure for RAS server
+- name: rasserver | Configure for RAS server
   block: 
-  - name: rasvpn-server | install eady-rsa
+  - name: rasserver | install eady-rsa
     yum:
       name:
       - easy-rsa
       state: present
 
-  - name: rasvpn-server | initial PKI
+  - name: rasserver | initial PKI
     shell: /usr/share/easy-rsa/3.0.8/easyrsa init-pki
     chdir: /etc/openvpn
   
-  - name: rasvpn-server | generate ca-key for server
+  - name: rasserver | generate ca-key for server
     shell: echo 'rasvpn' | /usr/share/easy-rsa/3.0.8/easyrsa build-ca nopass
     chdir: /etc/openvpn
   
-  - name: rasvpn-server | generate sert for server
+  - name: rasserver | generate sert for server
     shell: echo 'rasvpn' | /usr/share/easy-rsa/3.0.8/easyrsa gen-req server nopass
     chdir: /etc/openvpn
   
-  - name: rasvpn-server | confirm sert for server
+  - name: rasserver | confirm sert for server
     shell: echo 'yes' | /usr/share/easy-rsa/3.0.8/easyrsa sign-req server server
     chdir: /etc/openvpn
   
-  - name: rasvpn-server | generate dh-key
+  - name: rasserver | generate dh-key
     shell: /usr/share/easy-rsa/3.0.8/easyrsa gen-dh
     chdir: /etc/openvpn
   
-  - name: rasvpn-server | generate ta-key
+  - name: rasserver | generate ta-key
     shell: openvpn --genkey --secret ta.key
     chdir: /etc/openvpn
   
-  - name: rasvpn-server | generate sert for client
+  - name: rasserver | generate sert for client
     shell: echo 'client' | /usr/share/easy-rsa/3/easyrsa gen-req client nopass
     chdir: /etc/openvpn
   
-  - name: rasvpn-server | confirm sert for client
+  - name: rasserver | confirm sert for client
     shell: echo 'yes' | /usr/share/easy-rsa/3/easyrsa sign-req client client
     chdir: /etc/openvpn
   
-  - name: rasvpn-server | copy config file for server
+  - name: rasserver | copy config file for server
     copy:
       src: rasvpn/server.conf
       dest: /etc/openvpn
   
-  - name: rasvpn-server | copy config file for server
+  - name: rasserver | copy config file for server
     copy: 
       dest: /etc/openvpn/client/client
       content: |
         iroute 192.168.20.0 255.255.255.0
   
-  - name: rasvpn-server | fetch serts and keys to /tmp/fetched for client
+  - name: rasserver | fetch serts and keys to /tmp/fetched for client
     fetch:
       src: "/etc/openvpn/pki/{{ item }}"
       dest: /tmp/fetched
@@ -61,47 +61,47 @@
     - "issued/client.crt"
     - "private/client.key"
     
-  - name: rasvpn-server | start openvpn service
+  - name: rasserver | start openvpn service
     service: 
       name: openvpn@server
       state: restarted
       enabled: true
-  when: ansible_hostname == "rasvpn-server"
+  when: ansible_hostname == "rasserver"
 
-- name: rasvpn-client | Configure for RAS client
+- name: rasclient | Configure for RAS client
   block:
-  - name: rasvpn-client | copy serts and keys to /tmp/fetched for client
+  - name: rasclient | copy serts and keys to /tmp/fetched for client
     copy:
-      src: "/tmp/fetched/rasvpn-server/etc/openvpn/{{ item }}"
+      src: "/tmp/fetched/rasserver/etc/openvpn/{{ item }}"
       dest: /etc/openvpn/
     loop:
     - "ca.crt"
     - "issued/client.crt"
     - "private/client.key"
   
-  - name: rasvpn-client | copy config file for client
+  - name: rasclient | copy config file for client
     copy: 
       src: rasvpn/client.conf
       dest: /etc/openvpn/
   
-  - name: rasvpn-client | start openvpn service
+  - name: rasclient | start openvpn service
     service: 
       name: openvpn@client
       state: restarted
       enabled: true
   
-  - name: rasvpn-client | ping to rasvpn-server by openvpn
+  - name: rasclient | ping to rasserver by openvpn
     command: ping -c 4 10.10.20.1
     register: ping_to_rasvpnserver
   
-  - name: rasvpn-client | get client ip route
+  - name: rasclient | get client ip route
     command: ip route show
     register: client_ip_route
   
-  - name: rasvpn-client | show result of ping to rasvpn-server
+  - name: rasclient | show result of ping to rasserver
     debug: msg = "{{ ping_to_rasvpnserver }}"
   
-  - name: rasvpn-client | show result of client ip rooute
+  - name: rasclient | show result of client ip rooute
     debug: msg = "{{ client_ip_route }}"
   when: ansible_hostname == "client"
 
